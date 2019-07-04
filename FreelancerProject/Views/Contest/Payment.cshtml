@@ -1,0 +1,129 @@
+﻿@model Contest
+@{
+    Layout = null;
+    var winner = (Freelancer)ViewData["winner"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 logo">
+                    <a href="/Home/Index"><img src="~/Images/logo.png"></a>
+                </div>
+                
+            </div>
+        </div>
+    </header>
+    <section id="form">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 contest-form">
+                    <form action="/Contest/Payment/" method="post" enctype="multipart/form-data">
+                        <div class="form-group heading">
+                            <h5 class=" col-md-12">
+                                Contest Name
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.Contest_name);
+                                @Html.HiddenFor(model => model.Contest_id);
+                            </div>
+                        </div>
+                        <div class="form-group heading">
+                            <h5 class="col-md-12">
+                                Prize
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.Prize);
+                            </div>
+                        </div>
+                        <div class="form-group heading">
+                            <h5 class="col-md-12">
+                                Winner
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                               @if(winner != null)
+                               {
+                                   <p>@winner.Freelancer_name</p>
+                               }
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Make Payment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 form-img text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/Images/img1.jpg">
+                        </div>
+                        <div class="col-md-12">
+                            <img src="~/Images/img2.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-logo">
+                    <img src="~/Images/logo-footer.png">
+                </div>
+                <div class="col-md-3">
+                    <h4>Useful Links</h4>
+                    <ul class="useful-links">
+                        <li>Contest</li>
+                        <li>Projects</li>
+                        <li>Hire</li>
+                        <li>Log in</li>
+                        <li>Sign Up</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h4>Links</h4>
+                    <ul class="links">
+                        <li>Home</li>
+                        <li>About</li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 subscribe">
+                    <h4 style="margin-left:0;">Subscribe</h4>
+                    <p>Lorem ipsum sit amet dolor lorem ipsum set amet dolor amet sit amet lorem ipsum.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-bottom text-center">
+        <div class="container">
+            <div class="col-md-12">
+                <p>&copy;copyrights are reserved 2018-2019</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

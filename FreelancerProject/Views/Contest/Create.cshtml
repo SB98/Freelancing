@@ -1,0 +1,217 @@
+﻿@model Contest
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 logo">
+                    <a href="/Home/Index"><img src="~/Images/logo.png"></a>
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <nav class="pull-right" style="margin-top:15px;">
+                            <ul>
+                                <li ><a href="#">Home</a></li>
+                                <li class="active"><a href="/Contest/MyContests/">My Contests</a></li>
+
+                                <li><a href="/Contest/Browse/">Browse Contests</a></li>
+
+                               @if (Session["freelancer_id"] == null || Session["client_id"] == null)
+                               {
+                                <li><a href="/User/Login/"><span class="fa fa-sign-out fa-lg"></span>Login</a></li>
+                               }
+                            @if (Session["freelancer_id"] != null || Session["client_id"] != null)
+                            {
+                                <li><a href="/User/Logout/"><span class="fa fa-sign-out fa-lg"></span>Logout</a></li>
+                            }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+   @using (Html.BeginForm("Create", "Contest", FormMethod.Post))
+   {
+    @Html.AntiForgeryToken()
+    <section id="form">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 contest-form">
+                    <form action="/Contest/Create/" method="post" enctype="multipart/form-data">
+                        <div class="form-group heading">
+                            <h5 class=" col-md-12">
+                                1. What work do you require?
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @{
+                                    List<SelectListItem> li = new List<SelectListItem>();
+                                    li.Add(new SelectListItem
+                                    {
+                                        Text = "Mobile",
+                                        Value = "mobile"
+                                    });
+                                    li.Add(new SelectListItem
+                                    {
+                                        Text = "Web Design",
+                                        Value = "web_design"
+                                    });
+                                    li.Add(new SelectListItem
+                                    {
+                                        Text = "App Design",
+                                        Value = "app_design"
+                                    });
+                                    li.Add(new SelectListItem
+                                    {
+                                        Text = "Writing",
+                                        Value = "writing"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.Contest_category, li, "Select Category")
+                                <!-- <select class="form-control" name="category">
+                                     <option>Select Category</option>
+                                     <option>Mobile</option>
+                                     <option>Web Design</option>
+                                     <option>App Design</option>
+                                     <option>Writing</option>
+                                 </select>-->
+                            </div>
+                        </div>
+                        <div class="form-group heading">
+                            <h5 class="col-md-12">
+                                2. Tell us more about your contest
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12">
+                                Contest Name:
+                            </label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Contest_name, htmlAttributes: new { @class = "form-control", @name = "cname", @type = "text" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12">
+                                Enter some skills that relate to the contest:
+                            </label>
+                            <div class="col-md-12">
+                                @* @Html.TextBoxFor(model => model.Contest_name, htmlAttributes: new { @class = "form-control", @name = "cname", @type = "text" });*@
+                                <input type="text" class="form-control" name="skills">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12">
+                                Describe your contest in detail:
+                            </label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Contest_desc, htmlAttributes: new { @class = "form-control", @name = "desc", })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12">
+                                Upload files about your contest:
+                            </label>
+                            <div class="col-md-12">
+                                <input type="file" class="form-control" name="docfile">
+                            </div>
+                        </div>
+                        <div class="form-group heading">
+                            <h5 class="col-md-12">
+                                3. What's your budget?
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Prize, htmlAttributes: new { @class = "form-control", @minvalue = "1", @name = "price", @placeholder = "12,000", @type = "number" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12">
+                                Run your contest for:
+                            </label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.Duration, htmlAttributes: new { @class = "form-control", @name = "time_duration", @placeholder = "7 Days", @type = "number" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary">Start Contest</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 form-img text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/Images/img1.jpg">
+                        </div>
+                        <div class="col-md-12">
+                            <img src="~/Images/img2.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+                                    }
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-logo">
+                    <img src="~/Images/logo-footer.png">
+                </div>
+                <div class="col-md-3">
+                    <h4>Useful Links</h4>
+                    <ul class="useful-links">
+                        <li>Contest</li>
+                        <li>Projects</li>
+                        <li>Hire</li>
+                        <li>Log in</li>
+                        <li>Sign Up</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h4>Links</h4>
+                    <ul class="links">
+                        <li>Home</li>
+                        <li>About</li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 subscribe">
+                    <h4 style="margin-left:0;">Subscribe</h4>
+                    <p>Lorem ipsum sit amet dolor lorem ipsum set amet dolor amet sit amet lorem ipsum.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-bottom text-center">
+        <div class="container">
+            <div class="col-md-12">
+                <p>&copy;copyrights are reserved 2018-2019</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

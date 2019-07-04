@@ -1,0 +1,178 @@
+﻿@model PagedList.IPagedList<FreelancerProject.Contest>
+@using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 logo">
+                    <a href="/Home/Index"><img src="~/Images/logo.png"></a>
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <nav class="pull-right" style="margin-top:15px;">
+                            <ul>
+                                <li>@Html.ActionLink("Home", "Index", new { controller = "Home" })</li>
+                                <li>
+                                    @Html.ActionLink("My Contests", "MyContests", new { controller = "Contest" })
+
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Browse Contests", "Browse", new { controller = "Contest" }, new { @class = "active" })
+                                </li>
+
+                                @if (Session["freelancer_id"] == null || Session["client_id"] == null)
+                                {
+                                    <li><a href="/User/Login/"><span class="fa fa-sign-out fa-lg"></span>Login</a></li>
+                                }
+                                @if (Session["freelancer_id"] != null || Session["client_id"] != null)
+                                {
+                                    <li><a href="/User/Logout/"><span class="fa fa-sign-out fa-lg"></span>Logout</a></li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="browse_contest">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center">Browse Your Contests</h2>
+
+
+
+
+                    <table class="table">
+                        @using (Html.BeginForm("Browse", "Contest", FormMethod.Get))
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.Label("Contest Name", new { @class = "control-label", style = "margin-top: 5px;" })
+
+                                </td>
+                                <td>
+                                    @Html.TextBox("cname", "", new { @class = "form-control", placeholder = "Search by Contest Name" })
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td>@Html.Label("Skills", new { @class = "control-label", style = "margin-top: 5px;" })</td>
+                                    <td>
+                                        @Html.TextBox("skills", "", new { @class = "form-control", placeholder = "Search by Contest Name" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">
+                                        @Html.ActionLink("Start Your Contest", "Create", new { controller = "Contest" }, new { @class = "btn btn-info" })
+                                        <input type="submit" value="Search" class="btn pull-right btn-primary">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        }
+                    </table>
+
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-hover table-bordered table-striped">
+                        <tr>
+                            <th>Contest Name</th>
+                            <th> Entries</th>
+                            <th> Start Date <span class="fa fa-caret-down"></span></th>
+                            <th> Price</th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            var i = item.Contest_name;
+                            <tr>
+                                <td>
+                                    <h3> @Html.ActionLink(i, "Show", new { id = item.Contest_id })</h3>
+                                    <p>Description</p>
+                                    <p>@Html.DisplayFor(modelItem => item.Contest_category)</p>
+                                </td>
+                                <td>
+
+                                    **** 4 Entries
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contest_date)
+                                </td>
+                                <td>
+                                    $@Html.DisplayFor(modelItem => item.Prize)
+                                </td>
+                            </tr>
+
+                        }
+                    </table>
+                    <br />
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    @Html.PagedListPager(Model, page => Url.Action("Browse", new { name = ViewBag.name, skills = ViewBag.skills, page }))
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-logo">
+                    <img src="~/Images/logo-footer.png">
+                </div>
+                <div class="col-md-3">
+                    <h4>Useful Links</h4>
+                    <ul class="useful-links">
+                        <li>Contest</li>
+                        <li>Projects</li>
+                        <li>Hire</li>
+                        <li>Log in</li>
+                        <li>Sign Up</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h4>Links</h4>
+                    <ul class="links">
+                        <li>Home</li>
+                        <li>About</li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 subscribe">
+                    <h4 style="margin-left:0;">Subscribe</h4>
+                    <p>Lorem ipsum sit amet dolor lorem ipsum set amet dolor amet sit amet lorem ipsum.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-bottom text-center">
+        <div class="container">
+            <div class="col-md-12">
+                <p>&copy;copyrights are reserved 2018-2019</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
